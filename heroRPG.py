@@ -16,6 +16,12 @@ class Hero(object):
         print("You do {} damage to the goblin.".format(self.power))
         if enemy.health <= 0:
             print("The goblin is dead.")
+    
+    def alive(self):
+        if self.health >0:
+            return True
+        else:
+            return False
 
 class Goblin(object):
     def __init__(self, goblin_health, goblin_power):
@@ -27,12 +33,18 @@ class Goblin(object):
         print("The goblin does {} damage to you.".format(self.power))
         if hero.health <= 0:
             print("You are dead.")        
-  
+
+    def alive(self):
+        if self.health >0:
+            return True
+        else:
+            return False
+
 def main():
     hero = Hero(10, 5)
     goblin = Goblin(6, 2)
 
-    while goblin.health > 0 and hero.health > 0:
+    while goblin.alive() and hero.alive():
         print("You have {} health and {} power.".format(hero.health, hero.power))
         print("The goblin has {} health and {} power.".format(goblin.health, goblin.power))
         print()
