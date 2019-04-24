@@ -13,12 +13,12 @@ class Character(object):
 
     def attack(self, enemy):
         enemy.health -= self.power
-        if enemy.type == "goblin":
-            print("You do {} damage to the goblin.".format(self.power))
+        if enemy.type != "hero":
+            print("You do {0} damage to the {1}.".format(self.power, enemy.type))
             if enemy.health <= 0:
-                print("The goblin is dead.")
+                print("The {} is dead.", enemy.type)
         else:
-            print("The goblin does {} damage to you.".format(enemy.power))
+            print("The {0} does {1} damage to you.".format(self.type, self.power))
             if enemy.health <= 0:
                 print("You are dead.")        
     
@@ -32,25 +32,27 @@ class Character(object):
         if self.type == "hero":
             print("You have {} health and {} power.".format(self.health, self.power))
         else:
-            print("The goblin has {} health and {} power.".format(self.health, self.power))
+            print("The {} has {} health and {} power.".format(self.type, self.health, self.power))
 
 def main():
     hero = Character("hero", 10, 5)
     goblin = Character("goblin", 6, 2)
+    zombie = Character("zombie", float("inf"), 3)
 
-    while goblin.alive() and hero.alive():
+    while zombie.alive() and hero.alive():
         hero.print_status()
-        goblin.print_status()
+        zombie.print_status()
         print()
         print("What do you want to do?")
-        print("1. fight goblin")
+        # print("1. fight goblin")
+        print("1. fight zombie")
         print("2. do nothing")
         print("3. flee")
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
             # Hero attacks goblin
-            hero.attack(goblin)
+            hero.attack(zombie)
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -59,8 +61,8 @@ def main():
         else:
             print("Invalid input {}".format(raw_input))
 
-        if goblin.health > 0:
+        if zombie.health > 0:
             # Goblin attacks hero
-            goblin.attack(hero)
+            zombie.attack(hero)
 
 main()
