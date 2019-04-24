@@ -1,3 +1,4 @@
+import random
 #!/usr/bin/env python
 
 # In this simple RPG game, the hero fights the goblin. He has the options to:
@@ -13,8 +14,14 @@ class Character(object):
 
     def attack(self, enemy):
         enemy.health -= self.power
+        if self.type == "hero":
+            power_multiplier = 0
+            if random.randint(1,5) == 3:
+                power_multiplier = 2
+            else:
+                power_multiplier = 1
         if enemy.type != "hero":
-            print("You do {0} damage to the {1}.".format(self.power, enemy.type))
+            print("You do {0} damage to the {1}.".format(self.power * power_multiplier, enemy.type))
             if enemy.health <= 0:
                 print("The {} is dead.", enemy.type)
         else:
@@ -35,7 +42,7 @@ class Character(object):
             print("The {} has {} health and {} power.".format(self.type, self.health, self.power))
 
 def main():
-    hero = Character("hero", 10, 5)
+    hero = Character("hero", 100, 5)
     goblin = Character("goblin", 6, 2)
     zombie = Character("zombie", float("inf"), 3)
 
