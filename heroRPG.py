@@ -21,6 +21,12 @@ class Goblin(object):
     def __init__(self, goblin_health, goblin_power):
         self.health = goblin_health
         self.power = goblin_power
+
+    def attack(self, hero):
+        hero.health -= self.power
+        print("The goblin does {} damage to you.".format(self.power))
+        if hero.health <= 0:
+            print("You are dead.")        
   
 def main():
     hero = Hero(10, 5)
@@ -49,9 +55,6 @@ def main():
 
         if goblin.health > 0:
             # Goblin attacks hero
-            hero.health -= goblin.power
-            print("The goblin does {} damage to you.".format(goblin.power))
-            if hero.health <= 0:
-                print("You are dead.")
+            goblin.attack(hero)
 
 main()
