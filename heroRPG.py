@@ -5,17 +5,22 @@
 # 1. fight goblin
 # 2. do nothing - in which case the goblin will attack him anyway
 # 3. flee
-
-class Hero(object):
-    def __init__(self, hero_health, hero_power):
-        self.health = hero_health
-        self.power = hero_power
+class Character(object):
+    def __init__(self, character_type ,health, power):
+        self.type = character_type
+        self.health = health
+        self.power = power
 
     def attack(self, enemy):
         enemy.health -= self.power
-        print("You do {} damage to the goblin.".format(self.power))
-        if enemy.health <= 0:
-            print("The goblin is dead.")
+        if enemy.type == "goblin":
+            print("You do {} damage to the goblin.".format(self.power))
+            if enemy.health <= 0:
+                print("The goblin is dead.")
+        else:
+            print("The goblin does {} damage to you.".format(enemy.power))
+            if enemy.health <= 0:
+                print("You are dead.")        
     
     def alive(self):
         if self.health >0:
@@ -24,32 +29,14 @@ class Hero(object):
             return False
     
     def print_status(self):
-        print("You have {} health and {} power.".format(self.health, self.power))
-
-
-class Goblin(object):
-    def __init__(self, goblin_health, goblin_power):
-        self.health = goblin_health
-        self.power = goblin_power
-
-    def attack(self, hero):
-        hero.health -= self.power
-        print("The goblin does {} damage to you.".format(self.power))
-        if hero.health <= 0:
-            print("You are dead.")        
-
-    def alive(self):
-        if self.health >0:
-            return True
+        if self.type == "hero":
+            print("You have {} health and {} power.".format(self.health, self.power))
         else:
-            return False
-
-    def print_status(self):
-        print("The goblin has {} health and {} power.".format(self.health, self.power))
+            print("The goblin has {} health and {} power.".format(self.health, self.power))
 
 def main():
-    hero = Hero(10, 5)
-    goblin = Goblin(6, 2)
+    hero = Character("hero", 10, 5)
+    goblin = Character("goblin", 6, 2)
 
     while goblin.alive() and hero.alive():
         hero.print_status()
