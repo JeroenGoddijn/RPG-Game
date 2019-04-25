@@ -11,46 +11,59 @@ class Character(object):
         self.type = character_type
         self.health = health
         self.power = power
-        self.health_bonus = 0
+        self.healing_bonus = 0
         self.damage_reduction = 0
+        self.power_multiplier = 1
 
     def attack(self, enemy):
-        enemy.health -= self.power
         if self.type == "hero":
-            power_multiplier = 0
+            self.power_multiplier = 0
             if random.randint(1,5) == 3:
-                power_multiplier = 2
+                self.power_multiplier = 2
             else:
-                power_multiplier = 1
+                self.power_multiplier = 1
+            self.healing_bonus = 0
         # Medic can recuperate 2 health points after being attacked with a probability of 20%
-        if self.type == "medic":
-            health_bonus = 0
+        elif self.type == "medic":
+            self.power_multiplier = 1
+            self.healing_bonus = 0
             if random.randint(1,5) == 3:
-                health_bonus = 2
-                self.health += health_bonus
+                self.healing_bonus = 2
             else:
-                health_bonus = 0
-                self.health += health_bonus
+                self.healing_bonus = 0
+        else:
+            self.healing_bonus = 0
+            self.power_multiplier = 1
 
+        enemy.health -= self.power * self.power_multiplier
+        
         if enemy.type == "zombie":
-            print("You do {0} damage to the {1}.".format(self.power * power_multiplier, enemy.type))
+            print("You do {0} damage to the {1}.".format(self.power * self.power_multiplier, enemy.type))
             if enemy.health <= 0:
                 print("The {} is dead.".format(enemy.type))
         elif enemy.type == "shadow":
             if random.randint(1,10) == 5:
                 enemy.damage_reduction = self.power
-                print("Shadow damage reduction: {}".format(enemy.damage_reduction))
+                # print("Shadow damage reduction: {}".format(enemy.damage_reduction))
             else:
                 enemy.damage_reduction = 0
-                print("Shadow damage reduction: {}".format(enemy.damage_reduction))
+                # print("Shadow damage reduction: {}".format(enemy.damage_reduction))
             enemy.health += enemy.damage_reduction
-            print("Self Damage Reduction: {}".format(self.damage_reduction))
-            print("Enemy Damage Reduction: {}".format(enemy.damage_reduction))
-            print("You do {0} damage to the {1}.".format(self.power - enemy.damage_reduction, enemy.type))
+            print("You do {0} damage to the {1}.".format(self.power - self.damage_reduction, enemy.type))
+            if enemy.health <= 0:
+                print("The {} is dead.".format(enemy.type))
+        elif enemy.type == "medic":
+            # print(enemy.healing_bonus)
+            if enemy.healing_bonus != 0:
+                print("The {0} healed himself and recuperates {1} health points.".format(enemy.type, enemy.healing_bonus))
+                enemy.health += enemy.healing_bonus
+            else:
+                enemy.health += enemy.healing_bonus       
+            print("You do {0} damage to the {1}.".format(self.power * self.power_multiplier, enemy.type))
             if enemy.health <= 0:
                 print("The {} is dead.".format(enemy.type))
         elif enemy.type != "hero":
-            print("You do {0} damage to the {1}.".format(self.power * power_multiplier, enemy.type))
+            print("You do {0} damage to the {1}.".format(self.power * self.power_multiplier, enemy.type))
             if enemy.health <= 0:
                 print("The {} is dead.".format(enemy.type))
         else:
@@ -74,8 +87,8 @@ def main():
     hero = Character("hero", 10, 5)
     goblin = Character("goblin", 6, 2)
     zombie = Character("zombie", float("inf"), 3)
-    medic = Character("medic", 8, 3)
-    shadow = Character("shadow", 100, 1)
+    medic = Character("medic", 28, 3)
+    shadow = Character("shadow", 20, 1)
 
     opponent = ""
     random_opponent = random.randint(1,4)
