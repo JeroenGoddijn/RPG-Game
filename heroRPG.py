@@ -62,12 +62,21 @@ class Character(object):
             print("You do {0} damage to the {1}.".format(self.power * self.power_multiplier, enemy.type))
             if enemy.health <= 0:
                 print("The {} is dead.".format(enemy.type))
+        elif enemy.type == "deadpool":
+            print("You do {0} damage to {1}.".format(self.power * self.power_multiplier, enemy.type.capitalize()))
+            if enemy.health <= 0:
+                print("{} is dead.".format(enemy.type.capitalize()))
         elif enemy.type != "hero":
             print("You do {0} damage to the {1}.".format(self.power * self.power_multiplier, enemy.type))
             if enemy.health <= 0:
                 print("The {} is dead.".format(enemy.type))
         else:
-            print("The {0} does {1} damage to you.".format(self.type, self.power - enemy.damage_reduction))
+            if self.type == "hulk":
+                print("{0} SMASH!!! and does {1} damage to you.".format(self.type.upper(), self.power - enemy.damage_reduction))
+            elif self.type == "deadpool":
+                print("{0} does {1} damage to you.".format(self.type.capitalize(), self.power - enemy.damage_reduction))
+            else:
+                print("The {0} does {1} damage to you.".format(self.type, self.power - enemy.damage_reduction))
             if enemy.health <= 0:
                 print("You are dead.")        
     
@@ -81,17 +90,24 @@ class Character(object):
         if self.type == "hero":
             print("You have {} health and {} power.".format(self.health, self.power))
         else:
-            print("The {} has {} health and {} power.".format(self.type, self.health, self.power))
+            if self.type == "hulk":
+                print("{} has {} health and {} power.".format(self.type.upper(), self.health, self.power))
+            elif self.type == "deadpool":
+                print("{} has {} health and {} power.".format(self.type.capitalize(), self.health, self.power))
+            else:
+                print("The {} has {} health and {} power.".format(self.type, self.health, self.power))
 
 def main():
     hero = Character("hero", 10, 5)
     goblin = Character("goblin", 6, 2)
     zombie = Character("zombie", float("inf"), 3)
-    medic = Character("medic", 28, 3)
+    medic = Character("medic", 9, 3)
     shadow = Character("shadow", 20, 1)
+    hulk = Character("hulk", 50, 10)
+    deadpool = Character("deadpool", 15, 4)
 
     opponent = ""
-    random_opponent = random.randint(1,4)
+    random_opponent = random.randint(1,6)
     if random_opponent == 1:
         opponent = goblin
     elif random_opponent == 2:
@@ -100,6 +116,11 @@ def main():
         opponent = medic
     elif random_opponent == 4:
         opponent = shadow
+    elif random_opponent == 5:
+        opponent = hulk
+    elif random_opponent == 6:
+        opponent = deadpool
+    
     else:
         print("FAIL")
     # print(random_opponent)
