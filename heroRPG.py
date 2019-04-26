@@ -6,7 +6,7 @@ import random
 # 1. fight goblin
 # 2. do nothing - in which case the goblin will attack him anyway
 # 3. flee
-deadpool_quotes = ["It’s so dark. Are you sure you're not from the DC universe?", "Can you speak up? It’s hard to hear you with that pity dick in your mouth.", "Doing the right thing is messy. You want to fight for what's right, sometimes you have to fight dirty.”, “It has always been a dream to see my face reflected in your helmet.", "'Let’s Fuck Some Shit Up' is my middle name.", "You don't need to be a superhero to get the girl. The right girl will bring out the hero in you.", "Okay guys, I only have twelve bullets, so you're all going to have to share!", "Oh, hello there! I bet you’re wondering, why the red suit? Well, that’s so bad guys can’t see me bleed!"]
+deadpool_quotes = ["It’s so dark. Are you sure you're not from the DC universe?", "Can you speak up? It’s hard to hear you with that pity dick in your mouth.", "Doing the right thing is messy. You want to fight for what's right, sometimes you have to fight dirty.", "It has always been a dream to see my face reflected in your helmet.", "'Let’s Fuck Some Shit Up' is my middle name.", "You don't need to be a superhero to get the girl. The right girl will bring out the hero in you.", "Okay guys, I only have twelve bullets, so you're all going to have to share!", "Oh, hello there! I bet you’re wondering, why the red suit? Well, that’s so bad guys can’t see me bleed!"]
 
 class Character(object):
     def __init__(self, character_type ,health, power):
@@ -16,11 +16,11 @@ class Character(object):
 
     def attack(self, enemy):
         if enemy.type == "deadpool":
-            print("You do {0} damage to {1}.".format(self.power, enemy.type.capitalize()))
-            enemy.health -= self.power
             quote_index = random.randint(0, len(deadpool_quotes))
             print("Deadpool says: {}".format(deadpool_quotes[quote_index]))
             # print("Deadpool says: {}".format(Deadpool.printQuote(deadpool_quotes, quote_index)))
+            print("You do {0} damage to {1}.".format(self.power, enemy.type.capitalize()))
+            enemy.health -= self.power
             if enemy.health <= 0:
                 print("{} is dead.".format(enemy.type.capitalize()))
         elif enemy.type == "medic":
