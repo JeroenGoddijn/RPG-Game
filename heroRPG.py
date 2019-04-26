@@ -22,7 +22,9 @@ class Character(object):
             print("You do {0} damage to {1}.".format(self.power, enemy.type.capitalize()))
             enemy.health -= self.power
             if enemy.health <= 0:
+                self.coins += enemy.bounty
                 print("{} is dead.".format(enemy.type.capitalize()))
+                print("You win {} coins for killing {}".format(enemy.bounty, enemy.type.capitalize()))
         elif enemy.type == "medic":
             if enemy.healing:
                 print(enemy.health)
@@ -31,7 +33,9 @@ class Character(object):
             enemy.health -= self.power
             print("You do {0} damage to {1}.".format(self.power, enemy.type.capitalize()))
             if enemy.health <= 0:
+                self.coins += enemy.bounty
                 print("The {} is dead.".format(enemy.type))
+                print("You win {} coins for killing {}".format(enemy.bounty, enemy.type.capitalize()))
         elif enemy.type == "shadow":
             if enemy.takes_hit:
                 enemy.health -= self.power
@@ -39,12 +43,16 @@ class Character(object):
             else:
                 print("The {0} evades your attack and you do 0 damage to {0}.".format(enemy.type))
             if enemy.health <= 0:
+                self.coins += enemy.bounty
                 print("The {} is dead.".format(enemy.type))
+                print("You win {} coins for killing {}".format(enemy.bounty, enemy.type.capitalize()))
         elif enemy.type != "hero":
             enemy.health -= self.power
             print("You do {0} damage to the {1}.".format(self.power, enemy.type))
             if enemy.health <= 0:
+                self.coins += enemy.bounty
                 print("The {} is dead.".format(enemy.type))
+                print("You win {} coins for killing {}".format(enemy.bounty, enemy.type.capitalize()))
         else:
             if self.type == "hulk":
                 print("{0} SMASH!!! and does {1} damage to you.".format(self.type.upper(), self.power))
@@ -64,7 +72,7 @@ class Character(object):
     
     def print_status(self):
         if self.type == "hero":
-            print("You have {} health and {} power.".format(self.health, self.power))
+            print("You have {} health and {} power. And you have {} coins.".format(self.health, self.power, self.coins))
         else:
             if self.type == "hulk":
                 print("{} has {} health and {} power.".format(self.type.upper(), self.health, self.power))
@@ -76,10 +84,13 @@ class Character(object):
 class Goblin(Character):
     def __init__(self, character_type, health, power):
         Character.__init__(self, character_type, health, power)
+        self.bounty = 25
 
 class Medic(Character):
     def __init__(self, character_type, health, power):
         Character.__init__(self, character_type, health, power)
+        self.bounty = 15
+
         if random.randint(1,5) == 3:
             self.healing = True
         else:
@@ -89,10 +100,12 @@ class Zombie(Character):
     def __init__(self, character_type, health, power):
         Character.__init__(self, character_type, health, power)
         self.damage_reduction = 0
+        self.bounty = 100
 
 class Shadow(Character):
     def __init__(self, character_type, health, power):
         Character.__init__(self, character_type, health, power)
+        self.bounty = 50
 
         if random.randint(1,10) == 5:
             self.takes_hit = True
@@ -102,10 +115,12 @@ class Shadow(Character):
 class Hulk(Character):
     def __init__(self, character_type, health, power):
         Character.__init__(self, character_type, health, power)
+        self.bounty = 250
 
 class Deadpool(Character):
     def __init__(self, character_type, health, power):
         Character.__init__(self, character_type, health, power)
+        self.bounty = 75
     
     def printQuote(deadpool_quotes, quote_index):
             print(len(deadpool_quotes))
@@ -114,10 +129,12 @@ class Deadpool(Character):
 class Hero(Character):
     def __init__(self, character_type, health, power):
         Character.__init__(self, character_type, health, power)
+        self.coins = 100
         if random.randint(1,5) == 3:
             self.power = power* 2
 
 def main():
+    # character_variable_name = characterClass(character_name, health, power)
     hero = Hero("hero", 10, 5)
     goblin = Goblin("goblin", 6, 2)
     zombie = Zombie("zombie", float("inf"), 3)
