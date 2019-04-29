@@ -17,8 +17,10 @@ class Character(object):
     def attack(self, enemy):
         if enemy.type == "deadpool":
             quote_index = random.randint(0, len(deadpool_quotes))
+            print()
             print("Deadpool says: {}".format(deadpool_quotes[quote_index]))
             # print("Deadpool says: {}".format(Deadpool.printQuote(deadpool_quotes, quote_index)))
+            print()
             print("You do {0} damage to {1}.".format(self.power, enemy.type.capitalize()))
             enemy.health -= self.power
             if enemy.health <= 0:
@@ -31,6 +33,7 @@ class Character(object):
                 enemy.health += 2
                 print("The {0} healed himself and recuperates 2 health points.".format(enemy.type))
             enemy.health -= self.power
+            print()
             print("You do {0} damage to {1}.".format(self.power, enemy.type.capitalize()))
             if enemy.health <= 0:
                 self.coins += enemy.bounty
@@ -39,8 +42,10 @@ class Character(object):
         elif enemy.type == "shadow":
             if enemy.takes_hit:
                 enemy.health -= self.power
+                print()
                 print("You do {0} damage to {1}.".format(self.power, enemy.type.capitalize()))
             else:
+                print()
                 print("The {0} evades your attack and you do 0 damage to {0}.".format(enemy.type))
             if enemy.health <= 0:
                 self.coins += enemy.bounty
@@ -48,6 +53,7 @@ class Character(object):
                 print("You win {} coins for killing {}".format(enemy.bounty, enemy.type.capitalize()))
         elif enemy.type != "hero":
             enemy.health -= self.power
+            print()
             print("You do {0} damage to the {1}.".format(self.power, enemy.type))
             if enemy.health <= 0:
                 self.coins += enemy.bounty
@@ -55,10 +61,13 @@ class Character(object):
                 print("You win {} coins for killing {}".format(enemy.bounty, enemy.type.capitalize()))
         else:
             if self.type == "hulk":
+                print()
                 print("{0} SMASH!!! and does {1} damage to you.".format(self.type.upper(), self.power))
             elif self.type == "deadpool":
+                print()
                 print("{0} does {1} damage to you.".format(self.type.capitalize(), self.power))
             else:
+                print()
                 print("The {0} does {1} damage to you.".format(self.type, self.power))
             enemy.health -= self.power
             if enemy.health <= 0:
@@ -133,6 +142,60 @@ class Hero(Character):
         if random.randint(1,5) == 3:
             self.power = power* 2
 
+    def restore(self):
+        self.health = 10
+        print("Hero's heath is restored to {}!".format(self.health))
+        time.sleep(1)
+
+    def buy(self, item):
+        self.coins -= item.cost
+        item.apply(self)
+
+class Tonic(object):
+   cost = 5
+   name = 'tonic'
+   def apply(self, hero):
+       hero.health += 2
+    #    print("{}'s health increased to {}.".format(hero.character_type, hero.health))
+       print("Hero's health increased to {}.".format(hero.health))
+
+class Sword(object):
+   cost = 10
+   name = 'sword'
+   def apply(self, hero):
+       hero.power += 2
+    #    print("{}'s power increased to {}.".format(hero.character_type, hero.power))
+       print("Hero's power increased to {}.".format(hero.power))
+
+
+class Store(object):
+   # If you define a variable in the scope of a class:
+   # This is a class variable and you can access it like
+   # Store.items => [Tonic, Sword]
+
+   items = [Tonic, Sword]
+
+   def do_shopping(self, hero):
+       while True:
+            print("=====================")
+            print("Welcome to the store!")
+            print("=====================")
+            print("You have {} coins.".format(hero.coins))
+            print("What do you want to do?")
+            for i in range(len(Store.items)):
+                item = Store.items[i]
+                print("{}. buy {} ({} coins)".format(i + 1, item.name, item.cost))
+            print("10. leave")
+
+            raw_input = int(input("> "))
+            if raw_input == 10:
+                break
+            else:
+                ItemToBuy = Store.items[raw_input - 1]
+                item = ItemToBuy()
+                hero.buy(item)
+
+
 def main():
     # character_variable_name = characterClass(character_name, health, power)
     hero = Hero("hero", 10, 5)
@@ -164,6 +227,8 @@ def main():
     # print("You'll be fighting: {}".format(opponent.type))
     
     while opponent.alive() and hero.alive():
+        print()
+        print()
         hero.print_status()
         opponent.print_status()
         print()
@@ -171,6 +236,7 @@ def main():
         print("1. fight {}".format(opponent.type))
         print("2. do nothing")
         print("3. flee")
+        print("4. go to Store")
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
@@ -181,6 +247,8 @@ def main():
         elif raw_input == "3":
             print("Goodbye.")
             break
+        elif raw_input == "4":
+            Store().do_shopping(hero)
         else:
             print("Invalid input {}".format(raw_input))
 
