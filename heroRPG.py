@@ -1,4 +1,5 @@
 import random
+import time
 #!/usr/bin/env python
 
 # In this simple RPG game, the hero fights the goblin. He has the options to:
@@ -144,7 +145,7 @@ class Hero(Character):
 
     def restore(self):
         self.health = 10
-        print("Hero's heath is restored to {}!".format(self.health))
+        print("Hero's health is restored to {}!".format(self.health))
         time.sleep(1)
 
     def buy(self, item):
@@ -155,9 +156,9 @@ class Tonic(object):
    cost = 5
    name = 'tonic'
    def apply(self, hero):
-       hero.health += 2
+       if hero.health <= 10:
+           hero.restore()
     #    print("{}'s health increased to {}.".format(hero.character_type, hero.health))
-       print("Hero's health increased to {}.".format(hero.health))
 
 class Sword(object):
    cost = 10
@@ -185,10 +186,10 @@ class Store(object):
             for i in range(len(Store.items)):
                 item = Store.items[i]
                 print("{}. buy {} ({} coins)".format(i + 1, item.name, item.cost))
-            print("10. leave")
+            print("9. leave")
 
             raw_input = int(input("> "))
-            if raw_input == 10:
+            if raw_input == 9:
                 break
             else:
                 ItemToBuy = Store.items[raw_input - 1]
