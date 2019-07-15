@@ -10,11 +10,11 @@ discover new locations, and find treasure. This RPG Game is made completely with
 - Fight enemies in a turn-based combat system
 - Use equipment and items, both offensively or defensively, or to heal
 - Fight different characters (randomly selected), each with their own characteristics/powers:
--- Goblin
--- Medic
--- Shadow
--- Hulk
--- Deadpool
+  - Goblin
+  - Medic
+  - Shadow
+  - Hulk
+  - Deadpool
 
 
 ## Technologies
